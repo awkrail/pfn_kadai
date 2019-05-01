@@ -11,9 +11,7 @@ class GNN:
       "A" : np.random.normal(0, 0.4, D[0]),
       "b" : np.zeros(1)
     }
-    # self.W = np.random.normal(0, 0.4, D)
-    # self.A = np.random.normal(0, 0.4, D[0])
-    # self.b = np.zeros(1)
+    self.D = D
     self.T = T
   
   def forward(self, G, x):
@@ -41,7 +39,6 @@ class GNN:
       "A" : grad_A,
       "b" : grad_b
     }
-    
     return grads
   
   def aggregate(self, G, x):

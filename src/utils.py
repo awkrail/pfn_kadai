@@ -2,6 +2,7 @@
 ファイルの読み込み系のソースコード
 """
 import os
+import numpy as np
 
 def read_graph_from_file(data_dir):
   with open(data_dir, "r") as f:

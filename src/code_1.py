@@ -22,7 +22,7 @@ class GNN:
     return x
   
   def readout(self, agg_x):
-    h = np.sum(x, axis=0)
+    h = np.sum(agg_x, axis=0)
     return h
 
 if __name__ == "__main__":

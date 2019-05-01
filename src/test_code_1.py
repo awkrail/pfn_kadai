@@ -40,17 +40,17 @@ class TestGNN(unittest.TestCase):
                   [0, 1, 0]])
     T = 1
     x = np.eye(3)
-    expected_agg_x = np.array([[0, 1, 0],
-                               [1, 0, 1],
-                               [0, 1, 0]])
+    expected_agg_x = np.array([[1, 1, 1],
+                               [2, 2, 2],
+                               [1, 1, 1]])
     gnn = GNN(D, T)
     agg_x = gnn.aggregate(G, x)
     np.testing.assert_almost_equal(agg_x, expected_agg_x)
 
     T = 2
-    expected_agg_x = np.array([[1, 0, 1],
-                               [0, 2, 0],
-                               [1, 0, 1]])
+    expected_agg_x = np.array([[6, 6, 6],
+                               [6, 6, 6],
+                               [6, 6, 6]])
     gnn = GNN(D, T)
     agg_x = gnn.aggregate(G, x)
     np.testing.assert_almost_equal(agg_x, expected_agg_x)
@@ -65,21 +65,23 @@ class TestGNN(unittest.TestCase):
       h = [2, 2, 2]
     と計算される
     """
+    D = (3, 3)
     G = np.array([[0, 1, 0],
                   [1, 0, 1],
                   [0, 1, 0]])
     T = 1
-    expected_h = np.array([1, 2, 1])
-    gnn = GNN(G, T)
-    agg_x = gnn.aggregate()
-    h = gnn.readout()
+    x = np.eye(3)
+    expected_h = np.array([4, 4, 4])
+    gnn = GNN(D, T)
+    agg_x = gnn.aggregate(G, x)
+    h = gnn.readout(agg_x)
     np.testing.assert_almost_equal(h, expected_h)
 
     T = 2
-    expected_h = np.array([2, 2, 2])
-    gnn = GNN(G, T)
-    agg_x = gnn.aggregate()
-    h = gnn.readout()
+    expected_h = np.array([18, 18, 18])
+    gnn = GNN(D, T)
+    agg_x = gnn.aggregate(G, x)
+    h = gnn.readout(agg_x)
     np.testing.assert_almost_equal(h, expected_h)
 
 if __name__ == "__main__":

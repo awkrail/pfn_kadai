@@ -11,6 +11,7 @@ Preferred Networks インターン選考 2019
   - code_1.py : 課題1の実行ファイル
   - test_code_1.py : 課題1のテスト実行ファイル
   - code_2.py : 課題2の実行ファイル
+  - common.py : 各課題共通の関数をまとめたファイル
 ```
 
 以下が各ファイルの実行手順です  
@@ -21,3 +22,5 @@ Preferred Networks インターン選考 2019
 課題3 : cd src && python code_3.py
 課題4 : cd src && python code_4.py
 ```
+
+# 解説

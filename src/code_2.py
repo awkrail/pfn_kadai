@@ -1,11 +1,19 @@
+"""
+課題2のコード
+"""
 import numpy as np
 from common import binary_cross_entropy, ReLU, numerical_gradient
 
 class GNN:
   def __init__(self, D, T):
-    self.W = np.random.normal(0, 0.4, D)
-    self.A = np.random.normal(0, 0.4, D[0])
-    self.b = np.zeros(1)
+    self.params = {
+      "W" : np.random.normal(0, 0.4, D),
+      "A" : np.random.normal(0, 0.4, D[0]),
+      "b" : np.zeros(1)
+    }
+    # self.W = np.random.normal(0, 0.4, D)
+    # self.A = np.random.normal(0, 0.4, D[0])
+    # self.b = np.zeros(1)
     self.T = T
   
   def forward(self, G, x):
@@ -14,7 +22,7 @@ class GNN:
     # 2. readout
     h = self.readout(agg_x)
     # 3. linear transform
-    s = np.dot(h, self.A) + self.b
+    s = np.dot(h, self.params["A"]) + self.params["b"]
     return s
 
   def loss(self, G, x, t):
@@ -24,9 +32,9 @@ class GNN:
   def numerical_gradient(self, G, x, t):
     loss_f = lambda f : self.loss(G, x, t)
     # 損失関数を計算
-    grad_W = numerical_gradient(loss_f, self.W)
-    grad_A = numerical_gradient(loss_f, self.A)
-    grad_b = numerical_gradient(loss_f, self.b)
+    grad_W = numerical_gradient(loss_f, self.params["W"])
+    grad_A = numerical_gradient(loss_f, self.params["A"])
+    grad_b = numerical_gradient(loss_f, self.params["b"])
 
     grads = {
       "W" : grad_W,
@@ -42,7 +50,7 @@ class GNN:
       for i in range(x.shape[0]):
         linked_xs = x[G[i] == 1, :]
         a_i = np.sum(linked_xs, axis=0)
-        x_i_new = ReLU(np.dot(a_i, self.W))
+        x_i_new = ReLU(np.dot(a_i, self.params["W"]))
         copy_x[i] = x_i_new
       x = copy_x
     return x
@@ -71,15 +79,10 @@ if __name__ == "__main__":
 
   # 課題2(後半) : binary cross entropyを数値微分
   gnn = GNN(D, T)
-  for epoch in range(10000):
+  for epoch in range(1000):
     grads = gnn.numerical_gradient(G, x, t)
     for key in grads.keys():
-      if key == "W":
-        gnn.W -= lr * grads[key]
-      elif key == "A":
-        gnn.A -= lr * grads[key]
-      elif key == "b":
-        gnn.b -= lr * grads[key]
+      gnn.params[key] -= lr * grads[key]
     loss = gnn.loss(G, x, t)
     print("epoch : ", epoch, "loss : ", loss[0])
 

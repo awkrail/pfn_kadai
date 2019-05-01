@@ -3,45 +3,42 @@
 test_code_1.pyにテストコード
 """
 import numpy as np
+from common import ReLU
 
 class GNN:
-  def __init__(self, G, T):
-    self.G = G
-    self.rows, self.cols = self.G.shape
-    
-    # 重み行列
-    self.W = np.ones((self.rows, self.cols))
-    # one-hot-vectorで各特徴ベクトルを表現
-    self.x = np.eye(self.rows)
+  def __init__(self, D, T):
+    self.W = np.ones(D)
     self.T = T
   
-  def aggregate(self):
-    # 集約1, 集約2を計算する
+  def aggregate(self, G, x):
     for t in range(self.T):
-      copy_x = np.copy(self.x)
-      for i in range(self.x.shape[0]):
-        linked_xs = self.x[self.G[i] == 1, :] # 隣接行列から接続している特徴ベクトルを抜き出す
+      copy_x = np.copy(x)
+      for i in range(x.shape[0]):
+        linked_xs = x[G[i] == 1, :]
         a_i = np.sum(linked_xs, axis=0)
-        x_i_new = self.ReLU(a_i)
+        x_i_new = ReLU(np.dot(a_i, self.W))
         copy_x[i] = x_i_new
-      self.x = copy_x
-    return self.x
+      x = copy_x
+    return x
   
-  def readout(self):
-    # READOUTを計算する
-    h = np.sum(self.x, axis=0)
+  def readout(self, agg_x):
+    h = np.sum(x, axis=0)
     return h
-  
-  @staticmethod
-  def ReLU(x):
-    return np.maximum(0, x)
 
 if __name__ == "__main__":
+  D = (8, 8)
+  T = 2
   G = np.array([[0, 1, 0, 0],
                 [1, 0, 1, 1],
                 [0, 1, 0, 1],
                 [0, 1, 1, 0]])
+  x = np.zeros((G.shape[0], D[0]))
+  x[:, 0] = 1
   T = 1
-  gnn = GNN(G, T)
-  agg_x = gnn.aggregate()
-  h = gnn.readout()
+
+  gnn = GNN(D, T)
+  agg_x = gnn.aggregate(G, x)
+  h = gnn.readout(agg_x)
+
+  print("aggregated X : ", agg_x)
+  print("ReadOut h : ", h)

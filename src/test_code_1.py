@@ -34,23 +34,25 @@ class TestGNN(unittest.TestCase):
            [0, 2, 0],
            [1, 0, 1]]
     """
+    D = (3, 3)
     G = np.array([[0, 1, 0],
                   [1, 0, 1],
                   [0, 1, 0]])
     T = 1
+    x = np.eye(3)
     expected_agg_x = np.array([[0, 1, 0],
                                [1, 0, 1],
                                [0, 1, 0]])
-    gnn = GNN(G, T)
-    agg_x = gnn.aggregate()
+    gnn = GNN(D, T)
+    agg_x = gnn.aggregate(G, x)
     np.testing.assert_almost_equal(agg_x, expected_agg_x)
 
     T = 2
     expected_agg_x = np.array([[1, 0, 1],
                                [0, 2, 0],
                                [1, 0, 1]])
-    gnn = GNN(G, T)
-    agg_x = gnn.aggregate()
+    gnn = GNN(D, T)
+    agg_x = gnn.aggregate(G, x)
     np.testing.assert_almost_equal(agg_x, expected_agg_x)
     
   def test_readout(self):

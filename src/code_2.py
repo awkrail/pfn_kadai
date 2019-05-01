@@ -22,7 +22,7 @@ class GNN:
     return binary_cross_entropy(y, t)
   
   def numerical_gradient(self, G, x, t):
-    loss_f = lambda W : self.loss(G, x, t)
+    loss_f = lambda f : self.loss(G, x, t)
     # 損失関数を計算
     grad_W = numerical_gradient(loss_f, self.W)
     grad_A = numerical_gradient(loss_f, self.A)

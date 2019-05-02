@@ -108,9 +108,9 @@ if __name__ == "__main__":
   # hyper parameters
   N = len(train_graphs) # データ数
   D = (8, 8) # 行列の次元数
-  lr = 0.0001 # 学習率
+  lr = 0.001 # 学習率
   eta = 0.9 # モーメント
-  epoch = 20 # エポック数
+  epoch = 50 # エポック数
   B = 30 # バッチサイズ
   T = 2 # 集約数
 

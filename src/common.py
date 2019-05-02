@@ -8,6 +8,9 @@ def binary_cross_entropy(y, t):
 def ReLU(x):
   return np.maximum(0, x)
 
+def sigmoid(x):
+  return 1 / (1 + np.exp(-x))
+
 ###### 数値微分 ######
 def numerical_gradient_1d(f, x):
   eps = 1e-3

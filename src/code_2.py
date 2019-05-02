@@ -43,13 +43,13 @@ class GNN:
   
   def aggregate(self, G, x):
     for t in range(self.T):
-      copy_x = np.copy(x)
+      agg_x = np.zeros_like(x)
       for i in range(x.shape[0]):
         linked_xs = x[G[i] == 1, :]
         a_i = np.sum(linked_xs, axis=0)
         x_i_new = ReLU(np.dot(a_i, self.params["W"]))
-        copy_x[i] = x_i_new
-      x = copy_x
+        agg_x[i] = x_i_new
+      x = agg_x
     return x
   
   def readout(self, agg_x):
@@ -59,13 +59,20 @@ class GNN:
 if __name__ == "__main__":
   D = (8, 8)
   T = 2
-  G = np.array([[0, 1, 0, 0],
-                [1, 0, 1, 1],
-                [0, 1, 0, 1],
-                [0, 1, 1, 0]])
+  G = np.array([[0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+                [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+                [1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0]])
   x = np.zeros((G.shape[0], D[0]))
   x[:, 0] = 1 # 各ノードの特徴ベクトルは先頭要素だけ1, 他は0としたベクトルで表現
-  t = 1
+  t = 0
   lr = 0.001
   
   # 課題2(前半) : binary cross entropyを実装

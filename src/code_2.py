@@ -74,7 +74,7 @@ if __name__ == "__main__":
   x[:, 0] = 1 # 各ノードの特徴ベクトルは先頭要素だけ1, 他は0としたベクトルで表現
   t = 0
   lr = 0.001
-  
+    
   # 課題2(前半) : binary cross entropyを実装
   gnn = GNN(D, T)
   h = gnn.forward(G, x)

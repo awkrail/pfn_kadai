@@ -8,9 +8,12 @@ code_4.pyでは, コマンドライン引数に以下を選択することがで
 """
 import argparse
 import pickle
+import numpy as np
+
 from code_3 import SGD, MomentumSGD, BatchGNN
 from code_3 import train_val_split, calculate_accuracy_loss
 from utils import *
+from common import ReLU, numerical_gradient
 
 # Adam
 class Adam:
@@ -43,11 +46,50 @@ class Adam:
       params[key] -= self.lr * hat_m / (np.sqrt(hat_v) + 1e-7)
 
 # 2NN Network
-"""
 class BatchGNN_2NN(BatchGNN):
+  """
+  2層ニューラルネットワークへ変更
+  """
   def __init__(self, D, T):
-    super()
-"""
+    super().__init__(D, T)
+    self.params = {
+      "W1" : np.random.normal(0, 0.4, D),
+      "W2" : np.random.normal(0, 0.4, D),
+      "A" : np.random.normal(0, 0.4, D[0]),
+      "b" : np.zeros(1)
+    }
+    self.D = D
+    self.T = T
+  
+  def numerical_gradient(self, G, x, t):
+    loss_f = lambda f : self.loss(G, x, t)
+    grad_W1 = numerical_gradient(loss_f, self.params["W1"])
+    grad_W2 = numerical_gradient(loss_f, self.params["W2"])
+    grad_A = numerical_gradient(loss_f, self.params["A"])
+    grad_b = numerical_gradient(loss_f, self.params["b"])
+
+    grads = {
+      "W1" : grad_W1,
+      "W2" : grad_W2,
+      "A" : grad_A,
+      "b" : grad_b
+    }
+
+    return grads
+
+  def aggregate(self, G, x):
+    for t in range(self.T):
+      agg_x = np.zeros_like(x)
+      for i in range(x.shape[0]):
+        linked_xs = x[G[i] == 1, :]
+        a_i = np.sum(linked_xs, axis=0)
+        # x_i_new = ReLU(np.dot(a_i, self.params["W1"]))
+        a_i = ReLU(np.dot(a_i, self.params["W1"]))
+        x_i_new = ReLU(np.dot(a_i, self.params["W2"]))
+        agg_x[i] = x_i_new
+      x = agg_x
+    return x
+
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
@@ -76,7 +118,8 @@ if __name__ == "__main__":
   # model
   if nn_depth == 1:
     gnn = BatchGNN(D, T)
-  # TODO : 2層verを追加する
+  elif nn_depth == 2:
+    gnn = BatchGNN_2NN(D, T)
 
   if optim_method == "SGD":
     optimizer = SGD(lr)
@@ -110,12 +153,17 @@ if __name__ == "__main__":
   """
   あとで描画する時用に保存
   """
+  if nn_depth == 1:
+    net_path = "1NN"
+  elif nn_depth == 2:
+    net_path = "2NN"
+
   if optim_method == "SGD":
-    filename = "results/SGD.pkl"
+    filename = "results/" + net_path + "/SGD.pkl"
   elif optim_method == "mSGD":
-    filename = "results/MomentumSGD.pkl"
+    filename = "results/" + net_path + "/MomentumSGD.pkl"
   elif optim_method == "adam":
-    filename = "results/Adam.pkl"
+    filename = "results/" + net_path + "/Adam.pkl"
 
   with open(filename, "wb") as f:
     pickle.dump(results, f)

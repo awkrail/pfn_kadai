@@ -33,6 +33,18 @@ class BatchGNN(GNN):
     }
 
     return grads
+  
+  def load_params(self, epoch, filename):
+    """
+    predict.pyで予測を行う上で必要なため定義
+    code_3.pyでは利用しない
+    """
+    with open(filename, "rb") as f:
+      params = pickle.load(f)
+    
+    for key in params[epoch]["params"].keys():
+      self.params[key] = params[epoch]["params"][key]
+
 
 class SGD:
   """

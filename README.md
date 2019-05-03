@@ -6,8 +6,21 @@ Preferred Networks インターン選考 2019
 ソースコード, およびレポートは以下のような構成となっています  
 ```
 - README.md
-- pdf
+- report.pdf
+- prediction.txt
 - src
+  - datasets
+    - train
+    - test
+  - results
+    - 1NN : 1層のニューラルネットワークの結果
+      - Adam.pkl
+      - MomentumSGD.pkl
+      - SGD.pkl
+    - 2NN : 2層のニューラルネットワークの結果
+      - Adam.pkl
+      - MomentumSGD.pkl
+      - SGD.pkl
   - code_1.py : 課題1の実行ファイル
   - test_code_1.py : 課題1のテスト実行ファイル
   - code_2.py : 課題2の実行ファイル

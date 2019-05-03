@@ -147,9 +147,9 @@ if __name__ == "__main__":
   あとで描画する時用に保存
   """
   if args.optim == "SGD":
-    filename = "results/SGD.pkl"
+    filename = "results/1NN/SGD.pkl"
   else:
-    filename = "results/MomentumSGD.pkl"
+    filename = "results/1NN/MomentumSGD.pkl"
 
   with open(filename, "wb") as f:
     pickle.dump(results, f)

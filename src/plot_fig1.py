@@ -2,7 +2,7 @@ import pickle
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns #importするだけでスタイルがSeabornになる
+import seaborn as sns
 sns.set(font="IPAexGothic", font_scale=1.2)
 
 def plot_loss_transition(sgd_results, msgd_results):
@@ -62,13 +62,13 @@ def plot_acc_transition(sgd_results, msgd_results):
   plt.savefig("results/fig_acc.png")
 
 if __name__ == "__main__":
-  with open("results/SGD.pkl", "rb") as f:
+  with open("results/2NN/SGD.pkl", "rb") as f:
     sgd_results = pickle.load(f)
   
-  with open("results/MomentumSGD.pkl", "rb") as f:
+  with open("results/2NN/MomentumSGD.pkl", "rb") as f:
     m_sgd_results = pickle.load(f)
   
-  with open("results/Adam.pkl", "rb") as f:
+  with open("results/2NN/Adam.pkl", "rb") as f:
     adam_results = pickle.load(f)
   
   # 平均損失, 平均正解率のグラフをplotする
@@ -79,3 +79,4 @@ if __name__ == "__main__":
   sorted_m_sgd_results = sorted([(idx+1, m_sgd_result["val_acc"]) for idx, m_sgd_result in enumerate(m_sgd_results)], key=lambda x : x[1], reverse=True)
   sorted_sgd_results = sorted([(idx+1, sgd_result["val_acc"]) for idx, sgd_result in enumerate(sgd_results)], key=lambda x : x[1], reverse=True)
   sorted_adam_results = sorted([(idx+1, adam_result["val_acc"]) for idx, adam_result in enumerate(adam_results)], key=lambda x : x[1], reverse=True)
+  import ipdb; ipdb.set_trace()

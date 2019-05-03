@@ -61,8 +61,10 @@ class BatchGNN_2NN(BatchGNN):
     self.D = D
     self.T = T
   
-  def numerical_gradient(self, G, x, t):
-    loss_f = lambda f : self.loss(G, x, t)
+  def batch_gradient(self, Gs, ts):
+    loss_f = lambda f : self.batch_loss(Gs, ts)
+    
+    # 損失関数を計算
     grad_W1 = numerical_gradient(loss_f, self.params["W1"])
     grad_W2 = numerical_gradient(loss_f, self.params["W2"])
     grad_A = numerical_gradient(loss_f, self.params["A"])

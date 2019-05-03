@@ -28,7 +28,8 @@ Preferred Networks インターン選考 2019
   - code_4.py : 課題4の実行ファイル
   - common.py : 各課題共通の関数をまとめたファイル
   - utils.py : datasetsからのファイルの読み込みを行う関数をまとめたファイル
-  - plot_fig1.py : レポート用の図を出力するファイル : このファイルのみnumpy以外のライブラリを利用しています
+  - plot_figure.py : レポート用の図を出力するファイル : このファイルのみnumpy以外のライブラリを利用しています
+  - predict.py : 課題4で得られたモデルを用いてテストデータに対して予測を行い, prediction.txtとしてファイルを保存
 ```
 
 以下が各ファイルの実行手順です  
@@ -39,5 +40,6 @@ Preferred Networks インターン選考 2019
 課題1(テストコード) : cd src && python test_code_1.py
 課題2 : cd src && python code_2.py
 課題3 : cd src && python code_3.py -o SGD(or -o mSGD)
-課題4 : cd src && python code_4.py -o SGD(or -o mSGD or -o adam) -n 1(or -n 2)
+課題4(学習) : cd src && python code_4.py -o SGD(or -o mSGD or -o adam) -n 1(or -n 2)
+課題4(予測) : cd src && python predict.py
 ```

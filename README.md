@@ -1,6 +1,6 @@
 # PFN Internship
 Preferred Networks インターン選考 2019  
-コーディング課題 機械学習・数理分野
+コーディング課題 機械学習・数理分野  
 一次は通って面接で落ちた
 
 # source code
